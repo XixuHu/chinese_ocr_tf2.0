@@ -38,7 +38,7 @@ def predict(img):
     scale = height * 1.0 / 32
     width = int(width / scale)
     
-    img = img.resize([width, 32], Image.ANTIALIAS)
+    img = img.resize([width, 32], Image.Resampling.LANCZOS)#Image.ANTIALIAS
    
     '''
     img_array = np.array(img.convert('1'))

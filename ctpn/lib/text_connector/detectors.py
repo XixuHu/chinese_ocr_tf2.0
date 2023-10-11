@@ -45,9 +45,9 @@ class TextDetector:
         return text_lines
 
     def filter_boxes(self, boxes):
-        heights=np.zeros((len(boxes), 1), np.float)
-        widths=np.zeros((len(boxes), 1), np.float)
-        scores=np.zeros((len(boxes), 1), np.float)
+        heights=np.zeros((len(boxes), 1), np.float64)
+        widths=np.zeros((len(boxes), 1), np.float64)
+        scores=np.zeros((len(boxes), 1), np.float64)
         index=0
         for box in boxes:
             heights[index] = (abs(box[5] - box[1]) + abs(box[7] - box[3])) / 2.0 + 1

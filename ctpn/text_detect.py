@@ -22,16 +22,17 @@ def load_tf_model():
     cfg.TEST.checkpoints_path = './ctpn/checkpoints'
 
     # init session
-    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=1.0)
-    config = tf.ConfigProto(allow_soft_placement=True, gpu_options=gpu_options)
-    sess = tf.Session(config=config)
+    gpu_options = tf.config.experimental.list_physical_devices('GPU')
+    gpu_options = tf.compat.v1.GPUOptions(per_process_gpu_memory_fraction=1.0)
+    config = tf.compat.v1.ConfigProto(allow_soft_placement=True, gpu_options=gpu_options)
+    sess = tf.compat.v1.Session(config=config)
 
     # load network
     net = get_network("VGGnet_test")
 
     # load model
     print('Loading network {:s}... '.format("VGGnet_test"))
-    saver = tf.train.Saver()
+    saver = tf.compat.v1.train.Saver()
     try:
         ckpt = tf.train.get_checkpoint_state(cfg.TEST.checkpoints_path)
         print('Restoring from {}...'.format(ckpt.model_checkpoint_path))
@@ -63,7 +64,7 @@ def ctpn(img):
 def draw_boxes(img, boxes, scale):
     box_id = 0
     img = img.copy()
-    text_recs = np.zeros((len(boxes), 8), np.int)
+    text_recs = np.zeros((len(boxes), 8), np.int64)
     for box in boxes:
         if np.linalg.norm(box[0] - box[1]) < 5 or np.linalg.norm(box[3] - box[0]) < 5:
             continue
